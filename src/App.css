@@ -1,9 +1,39 @@
 .App {
   max-width: 860px;
-  margin: 40px auto;
+  margin: 40px auto auto 15%;
+  display: flex;
+}
+.History {
+  flex: 1;
+  margin-right: 20%;
+  margin-top: 20%;
+  max-height: 39vh;
+  overflow-y: auto;
+  font-size: 90%;
 }
 
-button {
+.Game {
+  flex: 3;
+} 
+
+::-webkit-scrollbar {
+  width: 0.25em;
+}
+::-webkit-scrollbar-track {
+  background:rgba(231, 75, 109, 0.795);
+  border-radius: 20%;
+}
+
+::-webkit-scrollbar-thumb {
+  background:rgba(117, 26, 46, 0.795);
+  border-radius: 20%;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:rgba(117, 26, 46, 0.65);
+}
+
+.newGameBtn {
   background: none;
   border: 2px solid white;
   padding: 6px 12px;
@@ -14,7 +44,7 @@ button {
   font-size: 1em;
 }
 
-button:hover {
+.newGameBtn:hover {
   background: rgba(231, 75, 109, 0.795);
   color: white;
 }
@@ -25,4 +55,3 @@ button:hover {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 20px;
 }
-

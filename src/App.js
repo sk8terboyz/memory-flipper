@@ -10,6 +10,7 @@ const cardImages = [
   { "src": "/img/shield-1.png", matched: false },
   { "src": "/img/sword-1.png", matched: false },
 ]
+let turnHistory = [];
 
 function App() {
 
@@ -18,6 +19,21 @@ function App() {
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [disabled, setDisabled] = useState(false);
+  const [match, setMatch] = useState(0);
+  
+
+  const startNewGame = () => {
+    if(match === 6) {
+      turnHistory.push(turns + " turns (W)")
+      setMatch(0);
+      shuffleCards();
+      return;
+    }
+    turnHistory.push(turns + " turns (L)")
+    setMatch(0);
+    shuffleCards();
+    console.log(turnHistory);
+  }
 
   // shuffle cards
   const shuffleCards = () => {
@@ -41,6 +57,8 @@ function App() {
     if (choiceOne && choiceTwo) {
       setDisabled(true);
       if(choiceOne.src === choiceTwo.src) {
+        let matches = match + 1;
+        setMatch(matches)
         choiceOne.matched = true;
         choiceTwo.matched = true;
         setCards(prevCards => {
@@ -58,7 +76,7 @@ function App() {
         resetTurn();
       }, 600);
     }
-  }, [choiceOne, choiceTwo])
+  }, [choiceOne, choiceTwo, match])
 
   // reset choices and increase turn
   const resetTurn = () => {
@@ -68,27 +86,38 @@ function App() {
     setDisabled(false);
   }
 
-  // start a new game automatically
+  // start a new game on startup
   useEffect(() => {
     shuffleCards();
   }, [])
 
   return (
     <div className="App">
-      <h1>Memory Flipper</h1>
-      <button onClick={shuffleCards}>New Game</button>
-      <div className='card-grid'>
-        {cards.map(card=>(
-          <SingleCard 
-            key={card.id}
-            card={card} 
-            handleChoice={handleChoice} 
-            flipped={ card === choiceOne || card === choiceTwo || card.matched }
-            disabled={ disabled }
-          />
-        ))}
+      <div className="History">
+        <h4>Game History:</h4>
+        <ol>
+          { turnHistory.map(turn => {
+              return<li>{turn}</li>
+            })
+          }
+        </ol>
       </div>
-      <p>{turns} Turns</p>
+      <div className="Game">
+        <h1>Memory Flipper</h1>
+        <button className="newGameBtn" onClick={startNewGame}>New Game</button>
+        <div className='card-grid'>
+          {cards.map(card=>(
+            <SingleCard 
+              key={card.id}
+              card={card} 
+              handleChoice={handleChoice} 
+              flipped={ card === choiceOne || card === choiceTwo || card.matched }
+              disabled={ disabled }
+            />
+          ))}
+        </div>
+        <p>{turns} Turns</p>
+      </div>
     </div>
   );
 }
